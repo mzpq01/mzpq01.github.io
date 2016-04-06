@@ -46,14 +46,14 @@
 </style>
 <body>
 <div class='my-legend'>
-<div class='legend-title'>Healthcare Condition in United States 2014 (Millions)</div>
+<div class='legend-title'>People without Healthcare in United States 2014 (Millions)</div>
 <div class='legend-scale'>
   <ul class='legend-labels'>
-    <li><span style='background:#edf8fb;'></span>0 - 2m</li>
-    <li><span style='background:#b2e2e2;'></span>4m</li>
-    <li><span style='background:#66c2a4;'></span>6m</li>
-    <li><span style='background:#2ca25f;'></span>8m</li>
-    <li><span style='background:#006d2c;'></span>10m</li>
+    <li><span style='background:#edf8fb;'></span>0 - 0.4M</li>
+    <li><span style='background:#b2e2e2;'></span>0.8M</li>
+    <li><span style='background:#66c2a4;'></span>1.2M</li>
+    <li><span style='background:#2ca25f;'></span>1.6M</li>
+    <li><span style='background:#006d2c;'></span>2.0M</li>
   </ul>
 </div>
 <div class='legend-source'>Source: <a href="http://bl.ocks.org/mbostock/3306362">Threshold Choropleth</a></div>
@@ -66,8 +66,8 @@
 var width = 960,
     height = 500;
 
-var color = d3.scale.linear()
-    .domain([9902803, 65])
+var color = d3.scale.log()
+    .domain([2064765, 7])
     .range(["#006d2c", "#edf8fb"]);
 
 var path = d3.geo.path();
@@ -87,7 +87,7 @@ function ready(error, us, health_care_2014) {
   var rateById = {};
 
   health_care_2014.forEach(function(d) { 
-    rateById[d.id] = +d.tot_pop; });
+    rateById[d.id] = +d.no_hc; });
 
   svg.append("g")
       .attr("class", "counties")
