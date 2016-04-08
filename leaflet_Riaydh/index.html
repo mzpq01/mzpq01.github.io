@@ -54,7 +54,7 @@
 	$.getJSON("leafletjs/data/links1.geojson",function(data){
     // add GeoJSON layer to the map once the file is loaded
     L.geoJson(data,{
-        onEachFeature: function (features, layer) {
+        onEachFeatures: function (features, layer) {
             layer.bindPopup(features.geometry.coordinates[0]);
         }
     }).addTo(map);
