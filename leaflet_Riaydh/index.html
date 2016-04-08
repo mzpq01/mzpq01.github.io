@@ -40,7 +40,7 @@
 	// var popup = L.popup();
 
 	// Write function to set Properties of the Popup
-	console.log(geometry.coordinates[0])
+	console.log(features.geometry.coordinates[0])
 	function onMapClick(e) {
     	popup
         	.setLatLng(e.latlng)
@@ -54,8 +54,8 @@
 	$.getJSON("leafletjs/data/links1.geojson",function(data){
     // add GeoJSON layer to the map once the file is loaded
     L.geoJson(data,{
-        onEachFeature: function (feature, layer) {
-            layer.bindPopup(geometry.coordinates[0]);
+        onEachFeature: function (features, layer) {
+            layer.bindPopup(features.geometry.coordinates[0]);
         }
     }).addTo(map);
 	});
