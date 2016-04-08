@@ -52,13 +52,14 @@
 	// load GeoJSON from an external file
 	$.getJSON("leafletjs/data/links1.geojson",function(data){
     // add GeoJSON layer to the map once the file is loaded
-    console.log(features.geometry.coordinates[0])
+
     L.geoJson(data,{
         onEachFeature: function (feature, layer) {
             layer.bindPopup(features.geometry.coordinates[0]);
         }
     }).addTo(map);
 	});
+    console.log(features.geometry.coordinates[0])
 
 //     var nexrad = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 //     layers: 'nexrad-n0r-900913',
