@@ -1,0 +1,162 @@
+
+<html>
+<head>
+    <title>Riyadh_VOC</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="riyadh_traffic.json"></script> <!-- read data from json file -->
+    <link href="main.css" rel="stylesheet" />
+    <style>
+        body {
+            position: center;
+            font-family: "Proxima Nova", "Montserrat", sans-serif;
+        }
+        h1, h2, h3, h4 {
+            position: center;
+            left: 10px;
+            font-size: 1.5em;
+            font-weight: 100;
+        }
+        h2 {
+            top: 10px;
+            font-size: 1.2em;
+        }
+        h3 {
+            position: absolute;
+            top: 75px;
+            left: 790px;
+            font-size: 1em;
+        }
+        h4 {
+            position: absolute;
+            top: 68px;
+            left: 640px;                       
+            font-size: 1em;
+        }
+        .hover {
+            stroke: red;
+            stroke-width: 5;   
+        }
+        #sliderContainer {
+            text-align: center;
+            position: relative;
+            top: 700px;
+}
+    </style>
+</head>
+
+<body>
+    <h1> Riyadh Traffic Flows </h1>
+    <h2> Road Volume over Capacity through a Typical Day </h2>
+    <h3></h3> 
+    <h4> The traffic volume is: </h4> 
+    <div id="sliderContainer"> <!-- a slider -->
+        <input id="timeslide" type="range" min="0" max="3" value="0" step="1"/><br>
+        <span id="range">Morning</span>
+    </div>
+
+    <script>
+    var width = 600;
+    var height = 600;
+
+    var inputValue = null
+    var timeofday = ["Morning","Midday","Evening","Rest of Day"]
+
+    var svg = d3.select( "body" )
+        .append( "svg" )
+        .attr( "width", width )
+        .attr( "height", height );
+
+    var g = svg.append( "g" );
+
+    var albersProjection = d3.geo.albers()
+        .scale( 50000 )
+        .rotate( [-46.731,0] )
+        .center( [0, 24.780] )
+        .translate( [width/2,height/2] );
+
+    var geoPath = d3.geo.path()
+        .projection( albersProjection );
+
+    g.selectAll( "path" )
+        .data( traffic_json.features )
+        .enter()
+        .append( "path" )
+        .attr( "fill", "#ffffff")
+        .attr( "stroke", "black")
+        .attr("stroke-width", function (x) {
+            if (inputValue =="Morning"){
+                return x.properties.voc_am *1
+            } else if (inputValue == "Midday"){
+                return x.properties.voc_md *1
+            } else if (inputValue == "Evening"){
+                return x.properties.voc_pm * 1
+            } else {
+                return x.properties.voc_rd * 1
+            }
+        }) // here we need to replace 1 with properties.voc_md value
+        .attr( "d", geoPath ) // "d" is D3.attribute stands for coordinates of a path
+        .attr("class","incident")
+        .on("mouseover", function(d){
+            if (inputValue =="Morning"){
+                 d3.select("h3").text(d.properties.voc_am);
+            d3.select(this).attr("class","incident hover");
+            } else if (inputValue == "Midday"){
+                 d3.select("h3").text(d.properties.voc_md);
+            d3.select(this).attr("class","incident hover");
+            } else if (inputValue == "Evening"){
+                 d3.select("h3").text(d.properties.voc_pm);
+            d3.select(this).attr("class","incident hover");
+            } else {
+                 d3.select("h3").text(d.properties.voc_rd);
+            d3.select(this).attr("class","incident hover");
+            }
+        })       
+        .on("mouseout", function(d){
+            d3.select("h3").text("");
+            d3.select(this).attr("class","incident");
+        });
+
+    // when the input range changes update the value 
+    d3.select("#timeslide").on("input", function() {
+        update(+this.value);
+    });
+    
+    // update the fill of each SVG of class "incident"
+    function update(value) {
+        document.getElementById("range").innerHTML=timeofday[value];
+        inputValue = timeofday[value];
+        d3.selectAll(".incident")
+            .attr("stroke", dateMatch)
+            .attr("stroke-width", function (x) {
+            if (inputValue =="Morning"){
+                return x.properties.voc_am *3
+            } else if (inputValue == "Midday"){
+                return x.properties.voc_md *3
+            } else if (inputValue == "Evening"){
+                return x.properties.voc_pm * 3
+            } else {
+                return x.properties.voc_rd * 3
+            }
+        })
+    }
+    function dateMatch(data, value) {       
+        if (inputValue == "Morning") {
+            return "blue";
+        } else if (inputValue == "Midday") {
+            return "red";
+        } else if (inputValue == "Evening"){
+            return "orange";
+        } else {
+            return "purple"
+        }
+    } 
+
+    function initialDate(m,i){
+        if (inputValue == "Morning") {
+            this.parentElement.appendChild(this);
+            return "blue";
+        } 
+    }      
+    </script>
+</body>
+</html>
