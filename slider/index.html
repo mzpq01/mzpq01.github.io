@@ -141,20 +141,20 @@
     }
     function dateMatch(data, value) {       
         if (inputValue == "Morning") {
-            return "blue";
-        } else if (inputValue == "Midday") {
-            return "red";
-        } else if (inputValue == "Evening"){
             return "orange";
+        } else if (inputValue == "Midday") {
+            return "purple";
+        } else if (inputValue == "Evening"){
+            return "blue";
         } else {
-            return "purple"
+            return "red"
         }
     } 
 
     function initialDate(m,i){
         if (inputValue == "Morning") {
             this.parentElement.appendChild(this);
-            return "blue";
+            return "black";
         } 
     }      
     </script>
