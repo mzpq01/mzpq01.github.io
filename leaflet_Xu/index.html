@@ -18,8 +18,9 @@
     // Create variable to hold map element, give initial settings to map
     var map = L.map('map',{ center: [42.362432, -71.086086], zoom: 14});
     // Add OpenStreetMap tile layer to map element
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {maxZoom: 19,
-        attribution: '© OpenStreetMap' }).addTo(map);
+    L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/base/{z}/{x}/{y}.png', {
+	attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
     // Create point feature for Kendall Square T Station
 	var myDataPoint = L.marker([42.362432, -71.086086]).addTo(map);
 	// Create line feature for Mass Ave Bridge, style and add to map
